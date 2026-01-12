@@ -1,0 +1,255 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>COE PORTAL - CBSUA</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg: #0a1f33;          /* deep navy */
+      --panel: #121820;       /* blackish panel */
+      --line: #1f3d5c;        /* blue-gray border */
+      --accent: #006699;      /* academic blue */
+      --primary: #1f6f54;     /* green */
+      --primary-hover: #22c55e;
+      --muted: #9fb6c9;       /* muted gray-blue */
+    }
+    * { box-sizing: border-box; }
+    body { margin:0; font-family:'Inter',sans-serif; background:var(--bg); color:#fff; }
+    header {
+      display:flex; align-items:center; justify-content:space-between;
+      padding:16px 24px; background:var(--accent); color:#fff;
+      box-shadow:0 2px 4px rgba(0,0,0,.2);
+    }
+    header .brand { display:flex; align-items:center; gap:12px; }
+    header img { width:50px; height:50px; border-radius:50%; background:#fff; padding:4px; }
+    header h1 { font-size:24px; font-weight:700; margin:0; }
+    .header-actions { display:flex; gap:10px; }
+    .btn {
+      background:var(--primary); color:#fff; border:none;
+      padding:8px 14px; border-radius:6px; cursor:pointer;
+      font-weight:600; transition:.2s;
+    }
+    .btn:hover { background:var(--primary-hover); }
+    .btn-ghost {
+      background:transparent; border:1px solid #fff; color:#fff;
+    }
+    main { display:grid; grid-template-columns:2fr 1fr; gap:24px; padding:24px; }
+    @media(max-width:900px){ main{grid-template-columns:1fr;} }
+    .grid-2 { display:grid; grid-template-columns:1fr 1fr; gap:24px; }
+    @media(max-width:900px){ .grid-2{grid-template-columns:1fr;} }
+    .card {
+      background:var(--panel); border:1px solid var(--line);
+      border-radius:8px; padding:20px; box-shadow:0 1px 3px rgba(0,0,0,.3);
+    }
+    .card h2 { margin:0 0 12px; font-size:18px; color:var(--accent); }
+    .status-bar {
+      display:flex; align-items:center; gap:10px;
+      padding:10px; border-radius:6px; background:#0f1520; border:1px solid var(--line);
+    }
+    .dot { width:12px; height:12px; border-radius:50%; }
+    .dot.not { background:purple; }
+    .dot.inc { background:orange; }
+    .dot.ok { background:green; }
+    .field {
+      width:100%; padding:10px; border-radius:6px;
+      border:1px solid var(--line); margin-top:10px; background:#0f1520; color:#fff;
+    }
+    textarea { min-height:80px; }
+    table { width:100%; border-collapse:collapse; margin-top:10px; }
+    th,td { padding:10px; border-bottom:1px solid var(--line); text-align:left; }
+    footer { text-align:center; padding:16px; background:var(--accent); color:#fff; margin-top:20px; }
+    #admin-actions { display:none; margin:24px; }
+    .pill { display:inline-block; padding:4px 8px; border:1px solid var(--line); border-radius:999px; color:var(--muted); font-size:12px; }
+    .modal { position:fixed; inset:0; display:none; align-items:center; justify-content:center; background:rgba(0,0,0,.6); padding:20px; }
+    .modal .sheet { max-width:520px; width:100%; background:var(--panel); border:1px solid var(--line); border-radius:8px; padding:20px; }
+    .modal .sheet h3 { margin:0 0 12px; color:var(--accent); }
+    .modal .close { float:right; }
+  </style>
+</head>
+<body>
+  <!-- Header -->
+  <header>
+    <div class="brand">
+      <img src="cbsua-seal.png" alt="CBSUA Logo">
+      <h1>COE PORTAL</h1>
+    </div>
+    <div class="header-actions">
+      <button class="btn" id="btn-login">Login</button>
+      <button class="btn btn-ghost" id="btn-suggest">Suggestions</button>
+      <button class="btn" id="btn-logout" style="display:none">Logout</button>
+    </div>
+  </header>
+
+  <!-- Main -->
+  <main>
+    <!-- Left side -->
+    <div class="grid-2">
+      <section class="card">
+        <h2>Announcements</h2>
+        <div id="announcement-list"><p> Welcome to the COE Portal!</p></div>
+      </section>
+      <section class="card">
+        <h2>COE Structure</h2>
+        <div id="structure"><p> </p></div>
+      </section>
+    </div>
+
+    <!-- Right side -->
+    <div class="grid-2" style="grid-template-columns:1fr">
+      <section class="card">
+        <h2>Status</h2>
+        <p id="student-email">xxx@cbsua.edu.ph</p>
+        <p id="student-name">Name of student</p>
+        <div class="status-bar">
+          <div id="status-dot" class="dot not"></div>
+          <div id="status-text">Not Available</div>
+        </div>
+        <input type="email" id="login-email" class="field" placeholder="Enter I.E. e.g xxx@cbsua.edu.ph" />
+        <button class="btn" id="btn-status" style="margin-top:10px">Refresh Status</button>
+      </section>
+      <section class="card">
+        <h2>Support</h2>
+        <form id="support-form">
+          <!-- Email field removed, fixed as 'student' -->
+          <select id="support-teacher" class="field" required>
+            <option value="" disabled selected>Select a teacher</option>
+          </select>
+          <textarea id="support-message" class="field" placeholder="Your complaint..." required></textarea>
+          <button class="btn" type="submit" style="margin-top:10px">Send</button>
+        </form>
+      </section>
+    </div>
+  </main>
+
+  <!-- Courses -->
+  <section class="card" style="margin:24px;">
+    <h2>Courses & Grades</h2>
+    <table>
+      <thead><tr><th>Courses</th><th>Grades</th></tr></thead>
+      <tbody id="grades-table"><tr><td>—</td><td>—</td></tr></tbody>
+    </table>
+  </section>
+
+  <!-- Admin Tools -->
+  <div id="admin-actions" class="card">
+    <h2>Administrator Tools</h2>
+    <button class="btn">Add Collaborator</button>
+    <button class="btn">Edit Announcements</button>
+    <button class="btn">Edit Structure</button>
+    <button class="btn">View Suggestions</button>
+  </div>
+
+  <!-- Suggestions Modal -->
+  <div id="suggest-modal" class="modal">
+    <div class="sheet">
+      <button class="btn btn-ghost close" id="suggest-close">Close</button>
+      <h3>Suggestions & Improvement</h3>
+      <form id="suggest-form">
+        <textarea id="suggest-text" class="field" placeholder="Your suggestion..." required></textarea>
+        <button class="btn" type="submit" style="margin-top:10px">Submit to Admin</button>
+      </form>
+    </div>
+  </div>
+
+  <!-- Footer -->
+  <footer>©2026 Central Bicol State University of Agriculture — College of Education</footer>
+
+<!-- Firebase SDKs -->
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-database-compat.js"></script>
+
+<!-- Firebase Config -->
+<script>
+  const firebaseConfig = {
+    apiKey: "YOUR_API_KEY",
+    authDomain: "coe-project-8be41.firebaseapp.com",
+    databaseURL: "https://coe-project-8be41-default-rtdb.asia-southeast1.firebasedatabase.app",
+    projectId: "coe-project-8be41",
+    storageBucket: "coe-project-8be41.appspot.com",
+    messagingSenderId: "YOUR_SENDER_ID",
+    appId: "YOUR_APP_ID"
+  };
+
+  firebase.initializeApp(firebaseConfig);
+  const auth = firebase.auth();
+  const db = firebase.database();
+</script>
+
+<!-- Portal Logic -->
+<script>
+  const loginBtn = document.getElementById('btn-login');
+  loginBtn.onclick = async () => {
+    const email = document.getElementById('login-email').value.trim();
+    if (!email.endsWith('@cbsua.edu.ph')) {
+      alert('Only CBSUA institutional emails are allowed.');
+      return;
+    }
+    const password = prompt('Enter password:');
+    if (!password) return;
+
+    try {
+      await auth.signInWithEmailAndPassword(email, password);
+      document.getElementById('student-email').textContent = email;
+      loginBtn.style.display = 'none';
+      document.getElementById('btn-logout').style.display = 'inline-block';
+      await refreshStatus(email);
+    } catch (err) {
+      alert(err.message);
+    }
+  };
+</script>
+</body>
+</html>
+
+<!-- Firebase SDKs (CDN) -->
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-database-compat.js"></script>
+
+<!-- Firebase Config (from Project Settings → Config) -->
+<script>
+  const firebaseConfig = {
+    apiKey: "YOUR_REAL_API_KEY",   // copy from Firebase Console
+    authDomain: "coe-project-8be41.firebaseapp.com",
+    databaseURL: "https://coe-project-8be41-default-rtdb.asia-southeast1.firebasedatabase.app",
+    projectId: "coe-project-8be41",
+    storageBucket: "coe-project-8be41.appspot.com",
+    messagingSenderId: "YOUR_REAL_SENDER_ID",   // copy from Firebase Console
+    appId: "YOUR_REAL_APP_ID"   // copy from Firebase Console
+  };
+
+  // Initialize Firebase
+  firebase.initializeApp(firebaseConfig);
+  const auth = firebase.auth();
+  const db = firebase.database();
+</script>
+
+<!-- Your portal logic (login, logout, refreshStatus, etc.) -->
+<script>
+  const loginBtn = document.getElementById('btn-login');
+  loginBtn.onclick = async () => {
+    const email = document.getElementById('login-email').value.trim();
+    if (!email.endsWith('@cbsua.edu.ph')) {
+      alert('Only CBSUA institutional emails are allowed.');
+      return;
+    }
+    const password = prompt('Enter password:');
+    if (!password) return;
+
+    try {
+      await auth.signInWithEmailAndPassword(email, password);
+      document.getElementById('student-email').textContent = email;
+      loginBtn.style.display = 'none';
+      document.getElementById('btn-logout').style.display = 'inline-block';
+      await refreshStatus(email);
+    } catch (err) {
+      alert(err.message);
+    }
+  };
+</script>
+</body>
+</html>
