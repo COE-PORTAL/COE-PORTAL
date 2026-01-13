@@ -1,4 +1,6 @@
 
+
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -100,15 +102,12 @@
   <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
   <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-auth.js"></script>
 <script>
-  var firebaseConfig = {
-    apiKey: "AIzaSyCInvrdG6wV_S46ka25xSoyEc908IkpxuM",
-    authDomain: "coe-project-8be41.firebaseapp.com",
-    projectId: "coe-project-8be41",
-    appId: "1:764260585148:web:5dc749399c414acaca8ab9"
-  };
-  firebase.initializeApp(firebaseConfig);
-</script>
-  
+   const resp = await fetch("https://coe-portal-psi.vercel.app/api/send-code", {
+  method: "POST",
+  headers: { "Content-Type": "application/json" },
+  body: JSON.stringify({ email, code: generatedCode })
+});
+
 <script>
   let generatedCode = "";
 
@@ -171,8 +170,6 @@
 
 </div>
 
-
-
   <!-- Main -->
   <main>
     <!-- Left side -->
@@ -197,7 +194,6 @@
           <div id="status-dot" class="dot not"></div>
           <div id="status-text">Status</div>
         </div>
-        <input type="email" id="login-email" class="field" placeholder="Enter I.E. e.g xxx@cbsua.edu.ph" />
         <button class="btn" id="btn-status" style="margin-top:10px">Refresh Status</button>
       </section>
       <section class="card">
@@ -247,23 +243,13 @@
   <!-- Footer -->
   <footer>©2026 Central Bicol State University of Agriculture — College of Education</footer>
 
-
-<!-- Firebase SDKs -->
-<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
-<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth-compat.js"></script>
-<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-database-compat.js"></script>
-
-<!-- Firebase Config -->
+<!-- Vercel -->
 <script>
-  const firebaseConfig = {
-    apiKey: "AIzaSyCInvrdG6wV_S46ka25xSoyEc908IkpxuM",
-    authDomain: "coe-project-8be41.firebaseapp.com",
-    databaseURL: "https://coe-project-8be41-default-rtdb.asia-southeast1.firebasedatabase.app",
-    projectId: "coe-project-8be41",
-    storageBucket: "coe-project-8be41.appspot.com",
-    messagingSenderId: "764260585148",
-    appId: "1:764260585148:web:5dc749399c414acaca8ab9"
-  };
+  const resp = await fetch("https://coe-portal-psi.vercel.app/api/send-code", {
+  method: "POST",
+  headers: { "Content-Type": "application/json" },
+  body: JSON.stringify({ email, code: generatedCode })
+});
 
   firebase.initializeApp(firebaseConfig);
   const auth = firebase.auth();
@@ -308,54 +294,6 @@
 </script>
 </body>
 </html>
-
-<!-- Your page content above -->
-
-<!-- Firebase SDKs -->
-<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
-<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth-compat.js"></script>
-<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-database-compat.js"></script>
-
-<!-- Firebase Config -->
-<script>
-  const firebaseConfig = {
-    apiKey: "AIzaSyCInvrdG6wV_S46ka25xSoyEc908IkpxuM",
-    authDomain: "coe-project-8be41.firebaseapp.com",
-    databaseURL: "https://coe-project-8be41-default-rtdb.asia-southeast1.firebasedatabase.app",
-    projectId: "coe-project-8be41",
-    storageBucket: "coe-project-8be41.firebasestorage.app",
-    messagingSenderId: "764260585148",
-    appId: "1:764260585148:web:5dc749399c414acaca8ab9"
-  };
-
-  firebase.initializeApp(firebaseConfig);
-  const auth = firebase.auth();
-  const db = firebase.database();
-</script>
-
-<!-- Other sections of your portal above -->
-
-<!-- Firebase SDKs -->
-<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
-<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth-compat.js"></script>
-<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-database-compat.js"></script>
-
-<!-- Firebase Config -->
-<script>
-  const firebaseConfig = {
-    apiKey: "YOUR_REAL_API_KEY",
-    authDomain: "coe-project-8be41.firebaseapp.com",
-    databaseURL: "https://coe-project-8be41-default-rtdb.asia-southeast1.firebasedatabase.app",
-    projectId: "coe-project-8be41",
-    storageBucket: "coe-project-8be41.appspot.com",
-    messagingSenderId: "YOUR_REAL_SENDER_ID",
-    appId: "YOUR_REAL_APP_ID"
-  };
-
-  firebase.initializeApp(firebaseConfig);
-  const auth = firebase.auth();
-  const db = firebase.database();
-</script>
 
 <!-- 📌 Code Generation + Validation -->
 <script>
@@ -431,20 +369,14 @@
 </body>
 </html>
 
-<!DOCTYPE html>
-<html>
-<head>
-
+</head/>
   <script>
     // 1. Your Firebase config (replace with your own project settings)
-    const firebaseConfig = {
-      apiKey: "AIzaSyCInvrdG6wV_S46ka25xSoyEc908IkpxuM",
-      authDomain: "https://coe-project-8be41-default-rtdb.asia-southeast1.firebasedatabase.app",
-      projectId: "coe-project-8be41",
-      storageBucket: "coe-project-8be41.firebasestorage.app",
-      messagingSenderId: "764260585148",
-      appId: "1:764260585148:web:5dc749399c414acaca8ab9"
-    };
+    const resp = await fetch("https://coe-portal-psi.vercel.app/api/send-code", {
+  method: "POST",
+  headers: { "Content-Type": "application/json" },
+  body: JSON.stringify({ email, code: generatedCode })
+});
 
     // 2. Initialize Firebase
     const app = firebase.initializeApp(firebaseConfig);
@@ -474,5 +406,98 @@
         });
     });
   </script>
-</body>
+
+<script>
+  // Initialize Firebase once
+  const resp = await fetch("https://coe-portal-psi.vercel.app/api/send-code", {
+  method: "POST",
+  headers: { "Content-Type": "application/json" },
+  body: JSON.stringify({ email, code: generatedCode })
+});
+
+  firebase.initializeApp(firebaseConfig);
+  const auth = firebase.auth();
+
+  let generatedCode = null;
+  let codeExpiry = null;
+
+  function generateCode() {
+    const letters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+    const numbers = "0123456789";
+    let code = "";
+    for (let i = 0; i < 3; i++) code += letters.charAt(Math.floor(Math.random() * letters.length));
+    for (let i = 0; i < 3; i++) code += numbers.charAt(Math.floor(Math.random() * numbers.length));
+    return code;
+  }
+
+  // 🔹 Sign Up
+  document.getElementById("btn-signup").onclick = async () => {
+    const email = document.getElementById("signup-email").value.trim();
+    const password = document.getElementById("signup-password").value.trim();
+
+    if (!email.endsWith("@cbsua.edu.ph")) {
+      alert("Only CBSUA institutional emails are allowed.");
+      return;
+    }
+    if (!password) {
+      alert("Password required.");
+      return;
+    }
+
+    generatedCode = generateCode();
+    codeExpiry = Date.now() + (15 * 60 * 1000);
+
+    try {
+      // 🔗 Call Vercel backend to send code via Brevo
+      const resp = await fetch("/api/send-code", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ email, code: generatedCode })
+      });
+      const data = await resp.json();
+      if (!resp.ok) throw new Error(data.message || "Failed to send code");
+
+      alert("A confirmation code has been sent to your CBSUA email.");
+      document.getElementById("code-section").style.display = "block";
+    } catch (err) {
+      console.error(err);
+      alert("Error sending confirmation code.");
+    }
+  };
+
+  // 🔹 Verify Code
+  document.getElementById("btn-verify").onclick = async () => {
+    const enteredCode = document.getElementById("signup-code").value.trim();
+
+    if (!generatedCode) {
+      alert("No code generated. Please sign up again.");
+      return;
+    }
+    if (Date.now() > codeExpiry) {
+      alert("Code expired. Please sign up again.");
+      return;
+    }
+    if (enteredCode !== generatedCode) {
+      alert("Invalid code. Please check your email.");
+      return;
+    }
+
+    try {
+      const email = document.getElementById("signup-email").value.trim();
+      const password = document.getElementById("signup-password").value.trim();
+
+      await auth.createUserWithEmailAndPassword(email, password);
+
+      alert("Account verified and created successfully! You can now log in.");
+      document.getElementById("signup-email").value = '';
+      document.getElementById("signup-password").value = '';
+      document.getElementById("signup-code").value = '';
+      document.getElementById("code-section").style.display = 'none';
+    } catch (err) {
+      alert(err.message);
+    }
+  };
+</script>
+    <title></title>
+    </body>
 </html>
