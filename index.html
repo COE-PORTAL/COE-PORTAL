@@ -6,38 +6,57 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>COE PORTAL - CBSUA</title>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
-
   <style>
     :root {
-      --bg: #0a1f33;
-      --panel: #121820;
-      --line: #1f3d5c;
-      --accent: #006699;
-      --primary: #1f6f54;
+      --bg: #0a1f33;          /* deep navy */
+      --panel: #121820;       /* blackish panel */
+      --line: #1f3d5c;        /* blue-gray border */
+      --accent: #006699;      /* academic blue */
+      --primary: #1f6f54;     /* green */
       --primary-hover: #22c55e;
-      --muted: #9fb6c9;
+      --muted: #9fb6c9;       /* muted gray-blue */
     }
     * { box-sizing: border-box; }
     body { margin:0; font-family:'Inter',sans-serif; background:var(--bg); color:#fff; }
-    header { display:flex; align-items:center; justify-content:space-between; padding:16px 24px; background:var(--accent); color:#fff; box-shadow:0 2px 4px rgba(0,0,0,.2); }
+    header {
+      display:flex; align-items:center; justify-content:space-between;
+      padding:16px 24px; background:var(--accent); color:#fff;
+      box-shadow:0 2px 4px rgba(0,0,0,.2);
+    }
     header .brand { display:flex; align-items:center; gap:12px; }
     header img { width:50px; height:50px; border-radius:50%; background:#fff; padding:4px; }
     header h1 { font-size:24px; font-weight:700; margin:0; }
-    .btn { background:var(--primary); color:#fff; border:none; padding:8px 14px; border-radius:6px; cursor:pointer; font-weight:600; transition:.2s; }
+    .header-actions { display:flex; gap:10px; }
+    .btn {
+      background:var(--primary); color:#fff; border:none;
+      padding:8px 14px; border-radius:6px; cursor:pointer;
+      font-weight:600; transition:.2s;
+    }
     .btn:hover { background:var(--primary-hover); }
-    .btn-ghost { background:transparent; border:1px solid #fff; color:#fff; }
+    .btn-ghost {
+      background:transparent; border:1px solid #fff; color:#fff;
+    }
     main { display:grid; grid-template-columns:2fr 1fr; gap:24px; padding:24px; }
     @media(max-width:900px){ main{grid-template-columns:1fr;} }
     .grid-2 { display:grid; grid-template-columns:1fr 1fr; gap:24px; }
     @media(max-width:900px){ .grid-2{grid-template-columns:1fr;} }
-    .card { background:var(--panel); border:1px solid var(--line); border-radius:8px; padding:20px; box-shadow:0 1px 3px rgba(0,0,0,.3); }
+    .card {
+      background:var(--panel); border:1px solid var(--line);
+      border-radius:8px; padding:20px; box-shadow:0 1px 3px rgba(0,0,0,.3);
+    }
     .card h2 { margin:0 0 12px; font-size:18px; color:var(--accent); }
-    .status-bar { display:flex; align-items:center; gap:10px; padding:10px; border-radius:6px; background:#0f1520; border:1px solid var(--line); }
+    .status-bar {
+      display:flex; align-items:center; gap:10px;
+      padding:10px; border-radius:6px; background:#0f1520; border:1px solid var(--line);
+    }
     .dot { width:12px; height:12px; border-radius:50%; }
     .dot.not { background:purple; }
     .dot.inc { background:orange; }
     .dot.ok { background:green; }
-    .field { width:100%; padding:10px; border-radius:6px; border:1px solid var(--line); margin-top:10px; background:#0f1520; color:#fff; }
+    .field {
+      width:100%; padding:10px; border-radius:6px;
+      border:1px solid var(--line); margin-top:10px; background:#0f1520; color:#fff;
+    }
     textarea { min-height:80px; }
     table { width:100%; border-collapse:collapse; margin-top:10px; }
     th,td { padding:10px; border-bottom:1px solid var(--line); text-align:left; }
@@ -50,7 +69,6 @@
     .modal .close { float:right; }
   </style>
 </head>
-
 <body>
   <!-- Header -->
   <header>
@@ -58,35 +76,106 @@
       <img src="cbsua-seal.png" alt="CBSUA Logo">
       <h1>COE PORTAL</h1>
     </div>
+    <div class="header-actions">
   </header>
 
-  <!-- Auth Container -->
-  <div id="auth-container" style="display:flex; gap:20px; margin:20px;">
-    <!-- Sign-Up Section -->
-    <div id="signup-section" class="card" style="margin:20px;">
-      <h2>Register</h2>
-      <input type="email" id="signup-email" placeholder="Enter CBSUA email" style="display:block; margin-bottom:10px;">
-      <input type="password" id="signup-password" placeholder="Create password" style="display:block; margin-bottom:10px;">
-      <button id="btn-signup">Sign Up</button>
-      <div id="code-section" style="display:none; margin-top:10px;">
-        <label for="signup-code">Paste the code here:</label>
-        <input type="text" id="signup-code" placeholder="ABC123" style="display:block; margin-bottom:10px;">
-        <button id="btn-verify">Verify Code</button>
-      </div>
-    </div>
+<!-- Auth Container -->
+<div id="auth-container" style="display:flex; gap:20px; margin:20px;">
 
-    <!-- Login Section -->
-    <div id="login-section" class="card" style="flex:1;">
-      <h2>Login</h2>
-      <input type="email" id="login-email" placeholder="Enter CBSUA email" style="display:block; margin-bottom:10px;">
-      <input type="password" id="login-password" placeholder="Enter password" style="display:block; margin-bottom:10px;">
-      <button id="btn-login">Login</button>
-      <button id="btn-logout" style="display:none;">Logout</button>
-    </div>
+<!-- Sign-Up Section (left) -->
+<div id="signup-section" class="card" style="margin:20px;">
+  <h2>Register</h2>
+  <input type="email" id="signup-email" placeholder="Enter CBSUA email" style="display:block; margin-bottom:10px;">
+  <input type="password" id="signup-password" placeholder="Create password" style="display:block; margin-bottom:10px;">
+  <button id="btn-signup">Sign Up</button>
+
+  <!-- Hidden code verification field -->
+  <div id="code-section" style="display:none; margin-top:10px;">
+    <label for="signup-code">Paste the code here:</label>
+    <input type="text" id="signup-code" placeholder="ABC123" style="display:block; margin-bottom:10px;">
+    <button id="btn-verify">Verify Code</button>
   </div>
+</div>
+<head>
+  <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-auth.js"></script>
+<script>
+  var firebaseConfig = {
+    apiKey: "AIzaSyCInvrdG6wV_S46ka25xSoyEc908IkpxuM",
+    authDomain: "coe-project-8be41.firebaseapp.com",
+    projectId: "coe-project-8be41",
+    appId: "1:764260585148:web:5dc749399c414acaca8ab9"
+  };
+  firebase.initializeApp(firebaseConfig);
+</script>
+  
+<script>
+  let generatedCode = "";
+
+  // Handle Sign Up
+  document.getElementById("btn-signup").addEventListener("click", function() {
+    const email = document.getElementById("signup-email").value;
+    const password = document.getElementById("signup-password").value;
+
+    // Only allow CBSUA emails
+    if (!email.endsWith("@cbsua.edu.ph")) {
+      alert("Please use your CBSUA institutional email.");
+      return;
+    }
+
+    // Generate random 6-digit code
+    generatedCode = Math.floor(100000 + Math.random() * 900000).toString();
+
+    // Show code input field
+    document.getElementById("code-section").style.display = "block";
+
+    // Send code to backend (this must be implemented server-side)
+    fetch("/send-code", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ email: email, code: generatedCode })
+    })
+    .then(res => res.json())
+    .then(data => {
+      alert("A confirmation code has been sent to your CBSUA email.");
+    })
+    .catch(err => {
+      console.error(err);
+      alert("Error sending confirmation code.");
+    });
+  });
+
+  // Handle Code Verification
+  document.getElementById("btn-verify").addEventListener("click", function() {
+    const enteredCode = document.getElementById("signup-code").value;
+
+    if (enteredCode === generatedCode) {
+      alert("Email verified successfully! You now have access.");
+      // TODO: Save user to database or allow login
+    } else {
+      alert("Invalid code. Please check your email again.");
+    }
+  });
+</script>
+
+
+
+  <!-- Login Section (right) -->
+  <div id="login-section" class="card" style="flex:1;">
+    <h2>Login</h2>
+    <input type="email" id="login-email" placeholder="Enter CBSUA email" style="display:block; margin-bottom:10px;">
+    <input type="password" id="login-password" placeholder="Enter password" style="display:block; margin-bottom:10px;">
+    <button id="btn-login">Login</button>
+    <button id="btn-logout" style="display:none;">Logout</button>
+  </div>
+
+</div>
+
+
 
   <!-- Main -->
   <main>
+    <!-- Left side -->
     <div class="grid-2">
       <section class="card">
         <h2>Announcements</h2>
@@ -98,6 +187,7 @@
       </section>
     </div>
 
+    <!-- Right side -->
     <div class="grid-2" style="grid-template-columns:1fr">
       <section class="card">
         <h2>Student Profile</h2>
@@ -110,10 +200,10 @@
         <input type="email" id="login-email" class="field" placeholder="Enter I.E. e.g xxx@cbsua.edu.ph" />
         <button class="btn" id="btn-status" style="margin-top:10px">Refresh Status</button>
       </section>
-
       <section class="card">
         <h2>Support</h2>
         <form id="support-form">
+          <!-- Email field removed, fixed as 'student' -->
           <select id="support-teacher" class="field" required>
             <option value="" disabled selected>Select a teacher</option>
           </select>
@@ -145,4 +235,244 @@
   <!-- Suggestions Modal -->
   <div id="suggest-modal" class="modal">
     <div class="sheet">
-      <button class="btn
+      <button class="btn btn-ghost close" id="suggest-close">Close</button>
+      <h3>Suggestions & Improvement</h3>
+      <form id="suggest-form">
+        <textarea id="suggest-text" class="field" placeholder="Your suggestion..." required></textarea>
+        <button class="btn" type="submit" style="margin-top:10px">Submit to Admin</button>
+      </form>
+    </div>
+  </div>
+
+  <!-- Footer -->
+  <footer>©2026 Central Bicol State University of Agriculture — College of Education</footer>
+
+
+<!-- Firebase SDKs -->
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-database-compat.js"></script>
+
+<!-- Firebase Config -->
+<script>
+  const firebaseConfig = {
+    apiKey: "AIzaSyCInvrdG6wV_S46ka25xSoyEc908IkpxuM",
+    authDomain: "coe-project-8be41.firebaseapp.com",
+    databaseURL: "https://coe-project-8be41-default-rtdb.asia-southeast1.firebasedatabase.app",
+    projectId: "coe-project-8be41",
+    storageBucket: "coe-project-8be41.appspot.com",
+    messagingSenderId: "764260585148",
+    appId: "1:764260585148:web:5dc749399c414acaca8ab9"
+  };
+
+  firebase.initializeApp(firebaseConfig);
+  const auth = firebase.auth();
+  const db = firebase.database();
+</script>
+
+<!-- Portal Logic -->
+<script>
+  const loginBtn = document.getElementById('btn-login');
+  const logoutBtn = document.getElementById('btn-logout');
+
+  loginBtn.onclick = async () => {
+    const email = document.getElementById('login-email').value.trim();
+    const password = document.getElementById('login-password').value.trim();
+
+    if (!email.endsWith('@cbsua.edu.ph')) {
+      alert('Only CBSUA institutional emails are allowed.');
+      return;
+    }
+    if (!password) {
+      alert('Password required.');
+      return;
+    }
+
+    try {
+      await auth.signInWithEmailAndPassword(email, password);
+      document.getElementById('student-email').textContent = email;
+      loginBtn.style.display = 'none';
+      logoutBtn.style.display = 'inline-block';
+      await refreshStatus(email);
+    } catch (err) {
+      alert(err.message);
+    }
+  };
+
+  logoutBtn.onclick = async () => {
+    await auth.signOut();
+    document.getElementById('student-email').textContent = '';
+    loginBtn.style.display = 'inline-block';
+    logoutBtn.style.display = 'none';
+  };
+</script>
+</body>
+</html>
+
+<!-- Your page content above -->
+
+<!-- Firebase SDKs -->
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-database-compat.js"></script>
+
+<!-- Firebase Config -->
+<script>
+  const firebaseConfig = {
+    apiKey: "AIzaSyCInvrdG6wV_S46ka25xSoyEc908IkpxuM",
+    authDomain: "coe-project-8be41.firebaseapp.com",
+    databaseURL: "https://coe-project-8be41-default-rtdb.asia-southeast1.firebasedatabase.app",
+    projectId: "coe-project-8be41",
+    storageBucket: "coe-project-8be41.firebasestorage.app",
+    messagingSenderId: "764260585148",
+    appId: "1:764260585148:web:5dc749399c414acaca8ab9"
+  };
+
+  firebase.initializeApp(firebaseConfig);
+  const auth = firebase.auth();
+  const db = firebase.database();
+</script>
+
+<!-- Other sections of your portal above -->
+
+<!-- Firebase SDKs -->
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-database-compat.js"></script>
+
+<!-- Firebase Config -->
+<script>
+  const firebaseConfig = {
+    apiKey: "YOUR_REAL_API_KEY",
+    authDomain: "coe-project-8be41.firebaseapp.com",
+    databaseURL: "https://coe-project-8be41-default-rtdb.asia-southeast1.firebasedatabase.app",
+    projectId: "coe-project-8be41",
+    storageBucket: "coe-project-8be41.appspot.com",
+    messagingSenderId: "YOUR_REAL_SENDER_ID",
+    appId: "YOUR_REAL_APP_ID"
+  };
+
+  firebase.initializeApp(firebaseConfig);
+  const auth = firebase.auth();
+  const db = firebase.database();
+</script>
+
+<!-- 📌 Code Generation + Validation -->
+<script>
+  let generatedCode = null;
+  let codeExpiry = null;
+
+  function generateCode() {
+    const letters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+    const numbers = "0123456789";
+    let code = "";
+    for (let i = 0; i < 3; i++) code += letters.charAt(Math.floor(Math.random() * letters.length));
+    for (let i = 0; i < 3; i++) code += numbers.charAt(Math.floor(Math.random() * numbers.length));
+    return code;
+  }
+
+  const signupBtn = document.getElementById('btn-signup');
+  const verifyBtn = document.getElementById('btn-verify');
+
+  signupBtn.onclick = async () => {
+    const email = document.getElementById('signup-email').value.trim();
+    const password = document.getElementById('signup-password').value.trim();
+
+    if (!email.endsWith('@cbsua.edu.ph')) {
+      alert('Only CBSUA institutional emails are allowed.');
+      return;
+    }
+    if (!password) {
+      alert('Password required.');
+      return;
+    }
+
+    generatedCode = generateCode();
+    codeExpiry = Date.now() + (15 * 60 * 1000); // 15 minutes
+
+    // TODO: send code via email (requires backend service)
+    console.log("Generated code:", generatedCode);
+
+    alert("A confirmation code has been sent to your CBSUA email. Please paste it below.");
+    document.getElementById('code-section').style.display = 'block';
+  };
+
+  verifyBtn.onclick = async () => {
+    const enteredCode = document.getElementById('signup-code').value.trim();
+
+    if (!generatedCode) {
+      alert("No code generated. Please sign up again.");
+      return;
+    }
+    if (Date.now() > codeExpiry) {
+      alert("Code expired. Please sign up again.");
+      return;
+    }
+    if (enteredCode !== generatedCode) {
+      alert("Invalid code. Please check your email.");
+      return;
+    }
+
+    try {
+      const email = document.getElementById('signup-email').value.trim();
+      const password = document.getElementById('signup-password').value.trim();
+      await auth.createUserWithEmailAndPassword(email, password);
+
+      alert("Account verified and created successfully! You can now log in.");
+      document.getElementById('signup-email').value = '';
+      document.getElementById('signup-password').value = '';
+      document.getElementById('signup-code').value = '';
+      document.getElementById('code-section').style.display = 'none';
+    } catch (err) {
+      alert(err.message);
+    }
+  };
+</script>
+</body>
+</html>
+
+<!DOCTYPE html>
+<html>
+<head>
+
+  <script>
+    // 1. Your Firebase config (replace with your own project settings)
+    const firebaseConfig = {
+      apiKey: "AIzaSyCInvrdG6wV_S46ka25xSoyEc908IkpxuM",
+      authDomain: "https://coe-project-8be41-default-rtdb.asia-southeast1.firebasedatabase.app",
+      projectId: "coe-project-8be41",
+      storageBucket: "coe-project-8be41.firebasestorage.app",
+      messagingSenderId: "764260585148",
+      appId: "1:764260585148:web:5dc749399c414acaca8ab9"
+    };
+
+    // 2. Initialize Firebase
+    const app = firebase.initializeApp(firebaseConfig);
+    const auth = firebase.auth();
+
+    // 3. Google provider
+    const provider = new firebase.auth.GoogleAuthProvider();
+
+    // 4. Button click → Sign in
+    document.getElementById("googleLogin").addEventListener("click", () => {
+      auth.signInWithPopup(provider)
+        .then(result => {
+          const user = result.user;
+          const email = user.email;
+
+          // 5. Domain check
+          if (email.endsWith("@cbsua.edu.ph")) {
+            alert("✅ Welcome CBSUA user: " + email);
+            // allow access to your portal here
+          } else {
+            alert("❌ Only CBSUA institutional accounts are allowed.");
+            auth.signOut();
+          }
+        })
+        .catch(error => {
+          console.error("Login error:", error);
+        });
+    });
+  </script>
+</body>
+</html>
