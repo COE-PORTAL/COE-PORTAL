@@ -79,13 +79,12 @@
       <h1>COE PORTAL</h1>
     </div>
     <div class="header-actions">
-      <button class="btn" id="btn-login">Login</button>
   </header>
 
 <!-- Auth Container -->
 <div id="auth-container" style="display:flex; gap:20px; margin:20px;">
 
-  <!-- Sign-Up Section (left) -->
+<!-- Sign-Up Section (left) -->
 <div id="signup-section" class="card" style="margin:20px;">
   <h2>Register</h2>
   <input type="email" id="signup-email" placeholder="Enter CBSUA email" style="display:block; margin-bottom:10px;">
@@ -99,6 +98,68 @@
     <button id="btn-verify">Verify Code</button>
   </div>
 </div>
+<head>
+  <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-auth.js"></script>
+<script>
+  var firebaseConfig = {
+    apiKey: "AIzaSyCInvrdG6wV_S46ka25xSoyEc908IkpxuM",
+    authDomain: "coe-project-8be41.firebaseapp.com",
+    projectId: "coe-project-8be41",
+    appId: "1:764260585148:web:5dc749399c414acaca8ab9"
+  };
+  firebase.initializeApp(firebaseConfig);
+</script>
+  
+<script>
+  let generatedCode = "";
+
+  // Handle Sign Up
+  document.getElementById("btn-signup").addEventListener("click", function() {
+    const email = document.getElementById("signup-email").value;
+    const password = document.getElementById("signup-password").value;
+
+    // Only allow CBSUA emails
+    if (!email.endsWith("@cbsua.edu.ph")) {
+      alert("Please use your CBSUA institutional email.");
+      return;
+    }
+
+    // Generate random 6-digit code
+    generatedCode = Math.floor(100000 + Math.random() * 900000).toString();
+
+    // Show code input field
+    document.getElementById("code-section").style.display = "block";
+
+    // Send code to backend (this must be implemented server-side)
+    fetch("/send-code", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ email: email, code: generatedCode })
+    })
+    .then(res => res.json())
+    .then(data => {
+      alert("A confirmation code has been sent to your CBSUA email.");
+    })
+    .catch(err => {
+      console.error(err);
+      alert("Error sending confirmation code.");
+    });
+  });
+
+  // Handle Code Verification
+  document.getElementById("btn-verify").addEventListener("click", function() {
+    const enteredCode = document.getElementById("signup-code").value;
+
+    if (enteredCode === generatedCode) {
+      alert("Email verified successfully! You now have access.");
+      // TODO: Save user to database or allow login
+    } else {
+      alert("Invalid code. Please check your email again.");
+    }
+  });
+</script>
+
 
 
   <!-- Login Section (right) -->
@@ -369,5 +430,51 @@
     }
   };
 </script>
+</body>
+</html>
+
+<!DOCTYPE html>
+<html>
+<head>
+
+  <script>
+    // 1. Your Firebase config (replace with your own project settings)
+    const firebaseConfig = {
+      apiKey: "AIzaSyCInvrdG6wV_S46ka25xSoyEc908IkpxuM",
+      authDomain: "https://coe-project-8be41-default-rtdb.asia-southeast1.firebasedatabase.app",
+      projectId: "coe-project-8be41",
+      storageBucket: "coe-project-8be41.firebasestorage.app",
+      messagingSenderId: "764260585148",
+      appId: "1:764260585148:web:5dc749399c414acaca8ab9"
+    };
+
+    // 2. Initialize Firebase
+    const app = firebase.initializeApp(firebaseConfig);
+    const auth = firebase.auth();
+
+    // 3. Google provider
+    const provider = new firebase.auth.GoogleAuthProvider();
+
+    // 4. Button click → Sign in
+    document.getElementById("googleLogin").addEventListener("click", () => {
+      auth.signInWithPopup(provider)
+        .then(result => {
+          const user = result.user;
+          const email = user.email;
+
+          // 5. Domain check
+          if (email.endsWith("@cbsua.edu.ph")) {
+            alert("✅ Welcome CBSUA user: " + email);
+            // allow access to your portal here
+          } else {
+            alert("❌ Only CBSUA institutional accounts are allowed.");
+            auth.signOut();
+          }
+        })
+        .catch(error => {
+          console.error("Login error:", error);
+        });
+    });
+  </script>
 </body>
 </html>
